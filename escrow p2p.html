@@ -1,0 +1,1781 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BUDDIES P2P Exchange</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  <style>
+    :root {
+      --primary: #1a237e;
+      --secondary: #ff6f00;
+      --accent: #00bcd4;
+      --success: #28a745;
+      --warning: #ffc107;
+      --danger: #dc3545;
+      --dark: #121212;
+      --light: #f8f9fa;
+    }
+    
+    body {
+      background-color: #f8f9fa;
+      color: #333;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    .top-bar {
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      color: white;
+      padding: 8px 15px;
+      font-size: 0.9rem;
+    }
+    
+    .navbar {
+      background-color: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .hero-section {
+      background: linear-gradient(135deg, var(--primary), #283593);
+      color: white;
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 20px auto;
+      position: relative;
+    }
+    
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 30px 20px;
+    }
+    
+    .hero-pattern {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 10% 20%, rgba(255,255,255,0.1) 0%, transparent 15%),
+        radial-gradient(circle at 90% 80%, rgba(255,255,255,0.1) 0%, transparent 15%);
+      z-index: 1;
+    }
+    
+    .card {
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
+      border: none;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    }
+    
+    .card-header {
+      font-weight: 600;
+      padding: 15px 20px;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+    
+    .buy-card .card-header {
+      background: linear-gradient(90deg, var(--primary), #3949ab);
+      color: white;
+    }
+    
+    .sell-card .card-header {
+      background: linear-gradient(90deg, var(--danger), #e53935);
+      color: white;
+    }
+    
+    .asset-btn {
+      border-radius: 20px;
+      padding: 6px 15px;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+      border: 1px solid #dee2e6;
+    }
+    
+    .asset-btn:hover, .asset-btn.active {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .asset-btn.active {
+      font-weight: 600;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border: none;
+      border-radius: 30px;
+      padding: 8px 20px;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(26, 35, 126, 0.4);
+    }
+    
+    .btn-warning {
+      background: linear-gradient(135deg, var(--warning), #ff8f00);
+      color: white;
+      border: none;
+      border-radius: 30px;
+      padding: 8px 20px;
+      font-weight: 600;
+    }
+    
+    .seller-card {
+      border-left: 4px solid var(--success);
+      margin-bottom: 12px;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+    
+    .seller-card:hover {
+      background-color: rgba(40, 167, 69, 0.05);
+    }
+    
+    .buyer-card {
+      border-left: 4px solid var(--accent);
+      margin-bottom: 12px;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+    
+    .buyer-card:hover {
+      background-color: rgba(0, 188, 212, 0.05);
+    }
+    
+    .seller-name {
+      font-weight: 600;
+      color: var(--dark);
+    }
+    
+    .seller-rating {
+      color: var(--warning);
+      font-weight: bold;
+    }
+    
+    .seller-transactions {
+      color: #6c757d;
+      font-size: 0.85rem;
+    }
+    
+    .seller-time {
+      color: var(--accent);
+      font-weight: 500;
+    }
+    
+    .seller-price {
+      font-weight: bold;
+      color: var(--success);
+    }
+    
+    .buyer-price {
+      font-weight: bold;
+      color: var(--accent);
+    }
+    
+    .seller-amount {
+      font-weight: bold;
+      color: var(--primary);
+    }
+    
+    .address-box {
+      background-color: #f8f9fa;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      word-break: break-all;
+      font-family: monospace;
+      font-size: 0.9rem;
+      border: 1px dashed #ced4da;
+    }
+    
+    .copy-btn {
+      cursor: pointer;
+      color: var(--primary);
+      float: right;
+      transition: all 0.2s;
+    }
+    
+    .copy-btn:hover {
+      color: var(--accent);
+      transform: scale(1.1);
+    }
+    
+    .network-badge {
+      margin: 10px 0;
+      border-radius: 4px;
+      padding: 4px 8px;
+      font-size: 0.8rem;
+      display: inline-block;
+    }
+    
+    .qr-container {
+      background: white;
+      padding: 10px;
+      border-radius: 8px;
+      display: inline-block;
+      margin: 10px auto;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+      border: 1px solid #eee;
+    }
+    
+    .min-deposit {
+      color: #6c757d;
+      font-size: 0.85rem;
+    }
+    
+    .profile-dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    
+    .profile-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      background-color: white;
+      min-width: 220px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      z-index: 100;
+      border-radius: 10px;
+      padding: 15px;
+      border: 1px solid #eee;
+    }
+    
+    .profile-dropdown:hover .profile-content {
+      display: block;
+    }
+    
+    .balance-amount {
+      font-weight: bold;
+      font-size: 1.3rem;
+      color: var(--success);
+      margin-top: 5px;
+    }
+    
+    .profile-action-btn {
+      width: 100%;
+      margin: 8px 0;
+      border-radius: 6px;
+      padding: 8px;
+      font-size: 0.9rem;
+    }
+    
+    .toast-notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+      min-width: 300px;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: all 0.4s ease;
+    }
+    
+    .toast-notification.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .coin-icon {
+      width: 24px;
+      height: 24px;
+      margin-right: 8px;
+      display: inline-block;
+      border-radius: 50%;
+      background: #eee;
+      text-align: center;
+      line-height: 24px;
+      font-weight: bold;
+      font-size: 0.8rem;
+    }
+    
+    .feature-highlight {
+      background: white;
+      border-radius: 12px;
+      padding: 25px;
+      margin-top: 30px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+      text-align: center;
+    }
+    
+    .feature-icon {
+      font-size: 3rem;
+      color: var(--accent);
+      margin-bottom: 15px;
+    }
+    
+    footer {
+      background: var(--dark);
+      color: white;
+      padding: 40px 0 20px;
+      margin-top: 50px;
+    }
+    
+    .footer-logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    
+    .modal-content {
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+    
+    .modal-header {
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      color: white;
+    }
+    
+    .withdraw-method {
+      border: 1px solid #dee2e6;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .withdraw-method:hover, .withdraw-method.selected {
+      border-color: var(--accent);
+      background-color: rgba(0, 188, 212, 0.05);
+    }
+    
+    .withdraw-method.selected {
+      border-width: 2px;
+    }
+    
+    .method-icon {
+      font-size: 1.8rem;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+    
+    .deposit-tab {
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    
+    .deposit-tab.active {
+      background-color: var(--primary);
+      color: white;
+    }
+    
+    .asset-deposit {
+      display: none;
+    }
+    
+    .asset-deposit.active {
+      display: block;
+    }
+    
+    .info-card {
+      background: linear-gradient(135deg, #f5f7ff, #e3eeff);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-left: 4px solid var(--accent);
+    }
+    
+    .trader-container {
+      max-height: 500px;
+      overflow-y: auto;
+      padding-right: 10px;
+    }
+    
+    .withdraw-section {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    
+    .insufficient-funds {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      z-index: 2000;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      padding: 30px;
+      display: none;
+    }
+    
+    .insufficient-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 1999;
+      display: none;
+    }
+    
+    .user-details-container {
+      max-width: 500px;
+      margin: 50px auto;
+      padding: 30px;
+      border-radius: 15px;
+      background: white;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    
+    .deposit-verify-btn {
+      margin-top: 15px;
+      width: 100%;
+    }
+    
+    .deposit-verify-form {
+      display: none;
+      margin-top: 20px;
+      padding: 20px;
+      border: 1px solid #eee;
+      border-radius: 10px;
+      background: #f8f9fa;
+    }
+    
+    .invalid-transaction {
+      display: none;
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #ffebee;
+      border-radius: 8px;
+      color: #c62828;
+      border: 1px solid #ffcdd2;
+    }
+    
+    .method-card {
+      border: 1px solid #dee2e6;
+      border-radius: 10px;
+      padding: 15px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: calc(33.333% - 10px);
+      margin-bottom: 15px;
+    }
+    
+    .method-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      border-color: var(--accent);
+    }
+    
+    .method-card.selected {
+      border: 2px solid var(--accent);
+      background-color: rgba(0, 188, 212, 0.05);
+    }
+    
+    @media (max-width: 768px) {
+      .hero-content {
+        padding: 20px 15px;
+      }
+      
+      .hero-content h1 {
+        font-size: 1.8rem;
+      }
+      
+      .trader-container {
+        max-height: 300px;
+      }
+      
+      .method-card {
+        width: calc(50% - 10px);
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .method-card {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- User Details Page -->
+  <div id="userDetailsPage" class="d-flex align-items-center justify-content-center min-vh-100">
+    <div class="user-details-container">
+      <div class="text-center mb-4">
+        <h2 class="fw-bold">Welcome to BUDDIES P2P</h2>
+        <p class="text-muted">Please complete your profile to get started</p>
+      </div>
+      <form id="userDetailsForm">
+        <div class="mb-3">
+          <label for="fullName" class="form-label">Full Name</label>
+          <input type="text" class="form-control form-control-lg" id="fullName" required>
+        </div>
+        <div class="mb-3">
+          <label for="country" class="form-label">Country</label>
+          <input type="text" class="form-control form-control-lg" id="country" placeholder="Enter your country" required>
+        </div>
+        <div class="mb-4">
+          <label for="phoneNumber" class="form-label">Phone Number</label>
+          <div class="input-group">
+            <input type="tel" class="form-control form-control-lg" id="phoneNumber" placeholder="e.g. +11234567890" required>
+          </div>
+          <div class="form-text">
+            Example: +11234567890
+          </div>
+        </div>
+        <div class="d-grid">
+          <button type="submit" class="btn btn-primary btn-lg">Continue to Exchange</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Main Exchange Platform (initially hidden) -->
+  <div id="exchangePlatform" style="display: none;">
+    <!-- Top Bar with Profile Dropdown -->
+    <div class="top-bar d-flex justify-content-between p-2 text-white">
+      <span><i class="bi bi-wallet2 me-1"></i> DEPOSITS: <strong>1B</strong> | USDT: <strong>1.3M</strong></span>
+      <div class="profile-dropdown">
+        <button class="btn profile-btn text-white p-0">
+          <i class="bi bi-person-circle me-1"></i> My Profile
+        </button>
+        <div class="profile-content">
+          <div class="text-center mb-3">
+            <i class="bi bi-person-circle" style="font-size: 2.5rem; color: var(--primary);"></i>
+            <div class="mt-2 fw-bold" id="profileName">
+              User123
+            </div>
+            <small class="text-muted" id="profileCountry">Verified Trader</small>
+          </div>
+          <div class="mb-3">
+            <small class="text-muted">Available Balance</small>
+            <div class="balance-amount">
+              $0.00
+            </div>
+          </div>
+          <button class="btn btn-primary profile-action-btn" data-bs-toggle="modal" data-bs-target="#depositModal">
+            <i class="bi bi-wallet2 me-2"></i> Deposit
+          </button>
+          <button class="btn btn-outline-secondary profile-action-btn" data-bs-toggle="modal" data-bs-target="#withdrawModal">
+            <i class="bi bi-cash-stack me-2"></i> Withdraw
+          </button>
+          <hr>
+          <button class="btn btn-outline-danger profile-action-btn">
+            <i class="bi bi-box-arrow-right me-2"></i> Logout
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-white sticky-top shadow-sm">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="#">
+          <span class="text-primary">BUDDIES</span>
+          <span class="text-secondary">P2P</span>
+        </a>
+        <div class="d-flex">
+          <button class="btn btn-warning fw-bold" id="jumpstartBtn">
+            <i class="bi bi-lightning-charge me-1"></i> Jumpstart
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="container">
+      <div class="hero-section">
+        <div class="hero-pattern"></div>
+        <div class="hero-content">
+          <div class="row align-items-center">
+            <div class="col-md-8">
+              <h1 class="fw-bold">Trade Crypto Directly with Peers</h1>
+              <p class="lead">Fast, secure, and low-fee trading on the BUDDIES P2P platform</p>
+              <div class="mt-4">
+                <button class="btn btn-light me-2" id="downloadAppBtn">
+                  <i class="bi bi-download me-1"></i> Download App
+                </button>
+                <button class="btn btn-warning" id="registerVesting">
+                  <i class="bi bi-award me-1"></i> Register for Vesting
+                </button>
+              </div>
+            </div>
+            <div class="col-md-4 d-none d-md-block">
+              <img src="https://images.unsplash.com/photo-1620336655052-b57986f5a26a?q=80&amp;w=500" class="img-fluid rounded shadow" alt="Crypto Trading">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature Highlight -->
+    <div class="container">
+      <div class="feature-highlight">
+        <div class="feature-icon">
+          <i class="bi bi-shield-lock"></i>
+        </div>
+        <h3 class="fw-bold">Secure &amp; Trusted P2P Trading</h3>
+        <p class="text-muted">Trade directly with other users with escrow protection and 24/7 support</p>
+        <div class="row mt-4">
+          <div class="col-md-3 mb-3">
+            <div class="p-3">
+              <i class="bi bi-lightning text-primary" style="font-size: 2rem;"></i>
+              <h5 class="mt-2">Fast Trades</h5>
+              <p class="text-muted small">Complete trades in minutes</p>
+            </div>
+          </div>
+          <div class="col-md-3 mb-3">
+            <div class="p-3">
+              <i class="bi bi-currency-exchange text-success" style="font-size: 2rem;"></i>
+              <h5 class="mt-2">Low Fees</h5>
+              <p class="text-muted small">Near-zero transaction fees</p>
+            </div>
+          </div>
+          <div class="col-md-3 mb-3">
+            <div class="p-3">
+              <i class="bi bi-shield-check text-info" style="font-size: 2rem;"></i>
+              <h5 class="mt-2">Escrow Protection</h5>
+              <p class="text-muted small">Secure transactions</p>
+            </div>
+          </div>
+          <div class="col-md-3 mb-3">
+            <div class="p-3">
+              <i class="bi bi-people text-warning" style="font-size: 2rem;"></i>
+              <h5 class="mt-2">Global Network</h5>
+              <p class="text-muted small">Trade with users worldwide</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container mt-5">
+      <div class="row">
+        <!-- Buy Section -->
+        <div class="col-md-6">
+          <div class="card buy-card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <h5 class="mb-0"><i class="bi bi-cart-plus me-2"></i>Buy Crypto</h5>
+              <button class="btn btn-dark" id="createBuyAd">
+                <i class="bi bi-plus-circle me-1"></i> Create Ad
+              </button>
+            </div>
+            <div class="card-body">
+              <div class="d-flex flex-wrap gap-2 mb-3" id="buyAssetButtonsContainer">
+                <button class="btn btn-outline-primary asset-btn active" data-asset="PI">
+                  <span class="coin-icon">PI</span> PI
+                </button>
+                <button class="btn btn-outline-primary asset-btn" data-asset="HC">
+                  <span class="coin-icon">HC</span> HC
+                </button>
+                <button class="btn btn-outline-primary asset-btn" data-asset="USDT">
+                  <span class="coin-icon">US</span> USDT
+                </button>
+                <button class="btn btn-outline-primary asset-btn" data-asset="ATOK">
+                  <span class="coin-icon">AT</span> ATOK
+                </button>
+                <button class="btn btn-outline-primary asset-btn" data-asset="MEC">
+                  <span class="coin-icon">ME</span> MEC
+                </button>
+              </div>
+              <div class="info-card">
+                <h6><i class="bi bi-info-circle me-2 text-primary"></i>How to Buy</h6>
+                <ol class="mt-3">
+                  <li>Select the cryptocurrency you want to buy</li>
+                  <li>Enter the amount you wish to purchase</li>
+                  <li>Choose a seller from the list below</li>
+                  <li>Complete the transaction using the escrow system</li>
+                </ol>
+              </div>
+              <div class="mb-3">
+                <label class="form-label fw-medium" id="buyAmountLabel">Enter amount of PI you want to buy</label>
+                <input type="number" class="form-control form-control-lg" id="buyAmountInput" placeholder="Min 10+ PI" min="10">
+              </div>
+              <select class="form-select mb-4" id="buySortSelect">
+                <option>Price low to high</option>
+                <option>Price high to low</option>
+                <option>Most transactions</option>
+                <option>Best rating</option>
+              </select>
+              <!-- Buy Sellers List -->
+              <div id="buySellersList" class="mt-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h6 class="fw-medium">Available Sellers</h6>
+                  <small class="text-muted">Showing 1-25 of 25</small>
+                </div>
+                <div id="buySellersContainer" class="trader-container">
+                  <!-- Sellers will be dynamically generated here -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sell Section -->
+        <div class="col-md-6">
+          <div class="card sell-card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <h5 class="mb-0"><i class="bi bi-cart-dash me-2"></i>Sell Crypto</h5>
+              <button class="btn btn-dark" id="createSellAd">
+                <i class="bi bi-plus-circle me-1"></i> Create Ad
+              </button>
+            </div>
+            <div class="card-body">
+              <div class="d-flex flex-wrap gap-2 mb-3" id="sellAssetButtonsContainer">
+                <button class="btn btn-outline-danger sell-asset-btn" data-asset="PI">
+                  <span class="coin-icon">PI</span> PI
+                </button>
+                <button class="btn btn-outline-danger sell-asset-btn" data-asset="HC">
+                  <span class="coin-icon">HC</span> HC
+                </button>
+                <button class="btn btn-outline-danger sell-asset-btn active" data-asset="USDT">
+                  <span class="coin-icon">US</span> USDT
+                </button>
+                <button class="btn btn-outline-danger sell-asset-btn" data-asset="ATOK">
+                  <span class="coin-icon">AT</span> ATOK
+                </button>
+                <button class="btn btn-outline-danger sell-asset-btn" data-asset="MEC">
+                  <span class="coin-icon">ME</span> MEC
+                </button>
+              </div>
+              <div class="info-card">
+                <h6><i class="bi bi-info-circle me-2 text-primary"></i>How to Sell</h6>
+                <ol class="mt-3">
+                  <li>Select the cryptocurrency you want to sell</li>
+                  <li>Enter the amount you wish to sell</li>
+                  <li>Choose a buyer from the list below</li>
+                  <li>Complete the transaction using the escrow system</li>
+                </ol>
+              </div>
+              <div class="mb-3">
+                <label class="form-label fw-medium" id="sellAmountLabel">Enter amount of USDT you want to sell</label>
+                <input type="number" class="form-control form-control-lg" id="sellAmountInput" placeholder="Min 10+ USDT" min="10">
+              </div>
+              <select class="form-select mb-4" id="sellSortSelect">
+                <option>Price low to high</option>
+                <option>Price high to low</option>
+                <option>Most transactions</option>
+                <option>Best rating</option>
+              </select>
+              <!-- Sell Buyers List -->
+              <div id="sellBuyersList" class="mt-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h6 class="fw-medium">Available Buyers</h6>
+                  <small class="text-muted">Showing 1-25 of 25</small>
+                </div>
+                <div id="sellBuyersContainer" class="trader-container">
+                  <!-- Buyers will be dynamically generated here -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-notification" id="vestingToast">
+      <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-primary text-white">
+          <strong class="me-auto"><i class="bi bi-hourglass-split me-2"></i> Coming Soon</strong>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close" onclick="closeToast()"></button>
+        </div>
+        <div class="toast-body bg-light">
+          <div class="d-flex align-items-center">
+            <i class="bi bi-info-circle-fill text-primary me-3" style="font-size: 1.5rem;"></i>
+            <div>
+              <h6 class="mb-1">Feature Coming Soon</h6>
+              <p class="mb-0">This feature is currently in development. Stay tuned for updates!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Deposit Modal -->
+    <div class="modal fade" id="depositModal" tabindex="-1" aria-labelledby="depositModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="depositModalLabel">Deposit Funds</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <ul class="nav nav-tabs mb-4" id="depositTabs" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="crypto-tab" data-bs-toggle="tab" data-bs-target="#crypto" type="button" role="tab">Crypto</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="fiat-tab" data-bs-toggle="tab" data-bs-target="#fiat" type="button" role="tab">Fiat</button>
+              </li>
+            </ul>
+            <div class="tab-content" id="depositTabContent">
+              <div class="tab-pane fade show active" id="crypto" role="tabpanel">
+                <div class="d-flex flex-wrap gap-3 mb-4">
+                  <button class="btn btn-outline-primary deposit-asset-btn active" data-asset="PI">
+                    <span class="coin-icon">PI</span> PI
+                  </button>
+                  <button class="btn btn-outline-primary deposit-asset-btn" data-asset="HC">
+                    <span class="coin-icon">HC</span> HC
+                  </button>
+                  <button class="btn btn-outline-primary deposit-asset-btn" data-asset="USDT">
+                    <span class="coin-icon">US</span> USDT
+                  </button>
+                  <button class="btn btn-outline-primary deposit-asset-btn" data-asset="ATOK">
+                    <span class="coin-icon">AT</span> ATOK
+                  </button>
+                  <button class="btn btn-outline-primary deposit-asset-btn" data-asset="MEC">
+                    <span class="coin-icon">ME</span> MEC
+                  </button>
+                </div>
+                <div class="asset-deposit-content active" id="depositPi">
+                  <h5>PI Deposit Address</h5>
+                  <div class="network-badge bg-purple text-white">
+                    Stellar Network
+                  </div>
+                  <div class="text-center mt-3">
+                    <div class="qr-container shadow-sm">
+                      <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&amp;data=GARJEC3EID6XDWX3FFDI45LG67PIDUHCZDNWZY7KA5D2RG5PVJE2MXI6" alt="PI Deposit QR" class="img-fluid">
+                    </div>
+                  </div>
+                  <div class="address-box mt-3">
+                    GARJEC3EID6XDWX3FFDI45LG67PIDUHCZDNWZY7KA5D2RG5PVJE2MXI6
+                    <span class="copy-btn" onclick="copyToClipboard('GARJEC3EID6XDWX3FFDI45LG67PIDUHCZDNWZY7KA5D2RG5PVJE2MXI6')">
+                      <i class="bi bi-clipboard"></i> Copy
+                    </span>
+                  </div>
+                  <div class="alert alert-info mt-3">
+                    <strong>Memo Required:</strong> Include your account memo when sending PI
+                  </div>
+                  <div class="min-deposit">
+                    <i class="bi bi-info-circle"></i> Minimum deposit: 10 PI
+                  </div>
+                  <button class="btn btn-primary deposit-verify-btn" data-asset="PI">
+                    <i class="bi bi-check-circle me-1"></i> I have deposited
+                  </button>
+                  <div class="deposit-verify-form" id="piVerifyForm">
+                    <h6>Verify Your Deposit</h6>
+                    <div class="mb-3">
+                      <label class="form-label">Transaction ID</label>
+                      <input type="text" class="form-control" placeholder="Enter transaction ID">
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Upload Screenshot (optional)</label>
+                      <input type="file" class="form-control">
+                    </div>
+                    <button class="btn btn-primary w-100" onclick="verifyDeposit('PI')">
+                      Verify Deposit
+                    </button>
+                  </div>
+                  <div class="invalid-transaction" id="piInvalidTransaction">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    <span>Invalid transaction ID. Please check and try again.</span>
+                  </div>
+                </div>
+                <div class="asset-deposit-content" id="depositHc">
+                  <h5>HC Deposit Address</h5>
+                  <div class="network-badge bg-teal text-white">
+                    HC Native Chain
+                  </div>
+                  <div class="text-center mt-3">
+                    <div class="qr-container shadow-sm">
+                      <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&amp;data=hwt1e3anyng3k5sucu2pyrhn37qnu4640a9glkdtns" alt="HC Deposit QR" class="img-fluid">
+                    </div>
+                  </div>
+                  <div class="address-box mt-3">
+                    hwt1e3anyng3k5sucu2pyrhn37qnu4640a9glkdtns
+                    <span class="copy-btn" onclick="copyToClipboard('hwt1e3anyng3k5sucu2pyrhn37qnu4640a9glkdtns')">
+                      <i class="bi bi-clipboard"></i> Copy
+                    </span>
+                  </div>
+                  <div class="min-deposit">
+                    <i class="bi bi-info-circle"></i> Minimum deposit: 100 HC
+                  </div>
+                  <button class="btn btn-primary deposit-verify-btn" data-asset="HC">
+                    <i class="bi bi-check-circle me-1"></i> I have deposited
+                  </button>
+                  <div class="deposit-verify-form" id="hcVerifyForm">
+                    <h6>Verify Your Deposit</h6>
+                    <div class="mb-3">
+                      <label class="form-label">Transaction ID</label>
+                      <input type="text" class="form-control" placeholder="Enter transaction ID">
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Upload Screenshot (optional)</label>
+                      <input type="file" class="form-control">
+                    </div>
+                    <button class="btn btn-primary w-100" onclick="verifyDeposit('HC')">
+                      Verify Deposit
+                    </button>
+                  </div>
+                  <div class="invalid-transaction" id="hcInvalidTransaction">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    <span>Invalid transaction ID. Please check and try again.</span>
+                  </div>
+                </div>
+                <div class="asset-deposit-content" id="depositUsdt">
+                  <h5>USDT Deposit Address</h5>
+                  <div class="network-badge bg-info text-white">
+                    TRC-20 Network
+                  </div>
+                  <div class="text-center mt-3">
+                    <div class="qr-container shadow-sm">
+                      <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&amp;data=TYd4gx8kt6B7yL1wQb3zN9mKsVpXeRc2" alt="USDT Deposit QR" class="img-fluid">
+                    </div>
+                  </div>
+                  <div class="address-box mt-3">
+                    TYd4gx8kt6B7yL1wQb3zN9mKsVpXeRc2
+                    <span class="copy-btn" onclick="copyToClipboard('TYd4gx8kt6B7yL1wQb3zN9mKsVpXeRc2')">
+                      <i class="bi bi-clipboard"></i> Copy
+                    </span>
+                  </div>
+                  <div class="alert alert-warning mt-3">
+                    <i class="bi bi-exclamation-triangle me-1"></i> Only send USDT via TRC-20 network
+                  </div>
+                  <div class="min-deposit">
+                    <i class="bi bi-info-circle"></i> Minimum deposit: 5 USDT
+                  </div>
+                  <button class="btn btn-primary deposit-verify-btn" data-asset="USDT">
+                    <i class="bi bi-check-circle me-1"></i> I have deposited
+                  </button>
+                  <div class="deposit-verify-form" id="usdtVerifyForm">
+                    <h6>Verify Your Deposit</h6>
+                    <div class="mb-3">
+                      <label class="form-label">Transaction ID</label>
+                      <input type="text" class="form-control" placeholder="Enter transaction ID">
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Upload Screenshot (optional)</label>
+                      <input type="file" class="form-control">
+                    </div>
+                    <button class="btn btn-primary w-100" onclick="verifyDeposit('USDT')">
+                      Verify Deposit
+                    </button>
+                  </div>
+                  <div class="invalid-transaction" id="usdtInvalidTransaction">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    <span>Invalid transaction ID. Please check and try again.</span>
+                  </div>
+                </div>
+                <div class="asset-deposit-content" id="depositAtok">
+                  <h5>ATOK Deposit Address</h5>
+                  <div class="network-badge bg-orange text-white">
+                    ERC-20 Network
+                  </div>
+                  <div class="text-center mt-3">
+                    <div class="qr-container shadow-sm">
+                      <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&amp;data=0x06c46d22a2220c1c60470b3fbe7658214510b034" alt="ATOK Deposit QR" class="img-fluid">
+                    </div>
+                  </div>
+                  <div class="address-box mt-3">
+                    0x06c46d22a2220c1c60470b3fbe7658214510b034
+                    <span class="copy-btn" onclick="copyToClipboard('0x06c46d22a2220c1c60470b3fbe7658214510b034')">
+                      <i class="bi bi-clipboard"></i> Copy
+                    </span>
+                  </div>
+                  <div class="min-deposit">
+                    <i class="bi bi-info-circle"></i> Minimum deposit: 150 ATOK
+                  </div>
+                  <button class="btn btn-primary deposit-verify-btn" data-asset="ATOK">
+                    <i class="bi bi-check-circle me-1"></i> I have deposited
+                  </button>
+                  <div class="deposit-verify-form" id="atokVerifyForm">
+                    <h6>Verify Your Deposit</h6>
+                    <div class="mb-3">
+                      <label class="form-label">Transaction ID</label>
+                      <input type="text" class="form-control" placeholder="Enter transaction ID">
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Upload Screenshot (optional)</label>
+                      <input type="file" class="form-control">
+                    </div>
+                    <button class="btn btn-primary w-100" onclick="verifyDeposit('ATOK')">
+                      Verify Deposit
+                    </button>
+                  </div>
+                  <div class="invalid-transaction" id="atokInvalidTransaction">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    <span>Invalid transaction ID. Please check and try again.</span>
+                  </div>
+                </div>
+                <div class="asset-deposit-content" id="depositMec">
+                  <h5>MEC Deposit Address</h5>
+                  <div class="network-badge bg-indigo text-white">
+                    MEC Native Chain
+                  </div>
+                  <div class="text-center mt-3">
+                    <div class="qr-container shadow-sm">
+                      <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&amp;data=me1z0ztmgha88htmkd8jfu3k5g2k5uepv2ecezqaw" alt="MEC Deposit QR" class="img-fluid">
+                    </div>
+                  </div>
+                  <div class="address-box mt-3">
+                    me1z0ztmgha88htmkd8jfu3k5g2k5uepv2ecezqaw
+                    <span class="copy-btn" onclick="copyToClipboard('me1z0ztmgha88htmkd8jfu3k5g2k5uepv2ecezqaw')">
+                      <i class="bi bi-clipboard"></i> Copy
+                    </span>
+                  </div>
+                  <div class="min-deposit">
+                    <i class="bi bi-info-circle"></i> Minimum deposit: 0.5 MEC
+                  </div>
+                  <button class="btn btn-primary deposit-verify-btn" data-asset="MEC">
+                    <i class="bi bi-check-circle me-1"></i> I have deposited
+                  </button>
+                  <div class="deposit-verify-form" id="mecVerifyForm">
+                    <h6>Verify Your Deposit</h6>
+                    <div class="mb-3">
+                      <label class="form-label">Transaction ID</label>
+                      <input type="text" class="form-control" placeholder="Enter transaction ID">
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Upload Screenshot (optional)</label>
+                      <input type="file" class="form-control">
+                    </div>
+                    <button class="btn btn-primary w-100" onclick="verifyDeposit('MEC')">
+                      Verify Deposit
+                    </button>
+                  </div>
+                  <div class="invalid-transaction" id="mecInvalidTransaction">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    <span>Invalid transaction ID. Please check and try again.</span>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane fade" id="fiat" role="tabpanel">
+                <div class="row">
+                  <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                      <div class="card-body text-center">
+                        <i class="bi bi-currency-exchange text-success" style="font-size: 3rem;"></i>
+                        <h5 class="mt-3">Binance Pay</h5>
+                        <div class="mt-3">
+                          <div class="fw-bold">
+                            Binance ID
+                          </div>
+                          <div class="address-box">
+                            979369986
+                          </div>
+                        </div>
+                        <div class="mt-3">
+                          <button class="btn btn-primary w-100" onclick="copyToClipboard('979369986')">
+                            <i class="bi bi-clipboard me-1"></i> Copy ID
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                      <div class="card-body text-center">
+                        <i class="bi bi-phone text-info" style="font-size: 3rem;"></i>
+                        <h5 class="mt-3">M-Pesa</h5>
+                        <div class="mt-3">
+                          <div class="fw-bold">
+                            Till Number
+                          </div>
+                          <div class="address-box">
+                            3589424
+                          </div>
+                        </div>
+                        <div class="mt-3">
+                          <button class="btn btn-primary w-100" onclick="copyToClipboard('3589424')">
+                            <i class="bi bi-clipboard me-1"></i> Copy Number
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Withdraw Modal -->
+    <div class="modal fade" id="withdrawModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Withdraw Funds</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <ul class="nav nav-pills mb-4" id="withdrawTabs">
+              <li class="nav-item">
+                <a class="nav-link active" data-bs-toggle="pill" href="#cryptoWithdraw">Crypto</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="pill" href="#mobileWithdraw">Mobile Money</a>
+              </li>
+            </ul>
+            
+            <div class="tab-content">
+              <!-- Crypto Withdrawal -->
+              <div class="tab-pane fade show active" id="cryptoWithdraw">
+                <div class="withdraw-form">
+                  <div class="mb-3">
+                    <label class="form-label">Select Asset</label>
+                    <select class="form-select" id="cryptoAsset">
+                      <option value="PI">PI</option>
+                      <option value="MEC">MEC</option>
+                      <option value="ATOK">ATOK</option>
+                      <option value="USDT">USDT (TRC20)</option>
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Withdrawal Address</label>
+                    <input type="text" class="form-control" id="withdrawAddress" placeholder="Enter wallet address">
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Amount</label>
+                    <input type="number" class="form-control" id="withdrawAmount" placeholder="Enter amount">
+                  </div>
+                  <button class="btn btn-primary w-100" id="withdrawCryptoBtn">Withdraw</button>
+                </div>
+              </div>
+              
+              <!-- Mobile Money Withdrawal -->
+              <div class="tab-pane fade" id="mobileWithdraw">
+                <div class="mb-4">
+                  <h5>Select Payment Method</h5>
+                  <div class="d-flex flex-wrap gap-3 mt-3" id="mobileMethodsContainer">
+                    <div class="method-card" data-method="Mpesa">
+                      <div class="method-icon text-primary">
+                        <i class="bi bi-phone"></i>
+                      </div>
+                      <h6>M-Pesa</h6>
+                      <small class="text-muted">Kenya, Tanzania</small>
+                    </div>
+                    
+                    <div class="method-card" data-method="Jazz">
+                      <div class="method-icon text-success">
+                        <i class="bi bi-wallet2"></i>
+                      </div>
+                      <h6>JazzCash</h6>
+                      <small class="text-muted">Pakistan</small>
+                    </div>
+                    
+                    <div class="method-card" data-method="EasyPaisa">
+                      <div class="method-icon text-info">
+                        <i class="bi bi-cash-coin"></i>
+                      </div>
+                      <h6>EasyPaisa</h6>
+                      <small class="text-muted">Pakistan</small>
+                    </div>
+                    
+                    <div class="method-card" data-method="Airtel">
+                      <div class="method-icon text-warning">
+                        <i class="bi bi-phone"></i>
+                      </div>
+                      <h6>Airtel Money</h6>
+                      <small class="text-muted">Africa, India</small>
+                    </div>
+                    
+                    <div class="method-card" data-method="Gcash">
+                      <div class="method-icon text-danger">
+                        <i class="bi bi-wallet"></i>
+                      </div>
+                      <h6>GCash</h6>
+                      <small class="text-muted">Philippines</small>
+                    </div>
+                    
+                    <div class="method-card" data-method="Orange">
+                      <div class="method-icon text-orange">
+                        <i class="bi bi-phone"></i>
+                      </div>
+                      <h6>Orange Money</h6>
+                      <small class="text-muted">Africa, Europe</small>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="withdraw-form">
+                  <div class="mb-3">
+                    <label class="form-label">Selected Method</label>
+                    <input type="text" class="form-control" id="selectedMethod" readonly placeholder="Select a method above">
+                  </div>
+                  
+                  <div class="mb-3">
+                    <label class="form-label">Account Name</label>
+                    <input type="text" class="form-control" id="accountName" placeholder="Enter account holder name">
+                  </div>
+                  
+                  <div class="mb-3">
+                    <label class="form-label">Account Number</label>
+                    <input type="text" class="form-control" id="accountNumber" placeholder="Enter account/mobile number">
+                  </div>
+                  
+                  <div class="mb-3">
+                    <label class="form-label">Amount (USD)</label>
+                    <input type="number" class="form-control" id="mobileAmount" placeholder="Enter amount">
+                    <div class="form-text">Minimum withdrawal: $10.00</div>
+                  </div>
+                  
+                  <button class="btn btn-primary w-100" id="withdrawMobileBtn">Withdraw Funds</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Insufficient Funds Modal -->
+  <div class="insufficient-funds" id="insufficientFundsModal">
+    <div class="mb-4">
+      <i class="bi bi-exclamation-triangle-fill text-danger" style="font-size: 3rem;"></i>
+    </div>
+    <h4 class="mb-3">Insufficient Funds</h4>
+    <p class="text-muted">You don't have enough funds to complete this withdrawal.</p>
+    <button class="btn btn-primary mt-2" id="insufficientCloseBtn">Close</button>
+  </div>
+  <div class="insufficient-overlay" id="insufficientOverlay"></div>
+
+  <!-- Toast Notification -->
+  <div class="toast-notification alert alert-success" id="toastNotification">
+    <div class="d-flex align-items-center">
+      <i class="bi bi-check-circle-fill me-3" style="font-size: 1.5rem;"></i>
+      <div>
+        <h6 class="mb-0" id="toastTitle">Success!</h6>
+        <p class="mb-0" id="toastMessage">Operation completed successfully</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Require Deposit Modal -->
+  <div class="modal fade" id="requireDepositModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-warning text-dark">
+          <h5 class="modal-title">Deposit Required</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center">
+          <div class="mb-4">
+            <i class="bi bi-exclamation-triangle-fill text-warning" style="font-size: 3rem;"></i>
+          </div>
+          <h5>Please make a deposit first</h5>
+          <p>You need to deposit funds before you can perform this action.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#depositModal" data-bs-dismiss="modal">Make Deposit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bg-dark text-white py-5 mt-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 mb-4">
+          <h3 class="fw-bold text-accent">BUDDIES P2P</h3>
+          <p class="mt-3">Secure peer-to-peer cryptocurrency exchange platform with advanced trading features.</p>
+        </div>
+        <div class="col-md-2 mb-4">
+          <h5>Platform</h5>
+          <ul class="list-unstyled">
+            <li><a href="#" class="text-white text-opacity-75 text-decoration-none">Trade</a></li>
+            <li><a href="#" class="text-white text-opacity-75 text-decoration-none">Wallet</a></li>
+            <li><a href="#" class="text-white text-opacity-75 text-decoration-none">Markets</a></li>
+            <li><a href="#" class="text-white text-opacity-75 text-decoration-none">Fees</a></li>
+          </ul>
+        </div>
+        <div class="col-md-2 mb-4">
+          <h5>Company</h5>
+          <ul class="list-unstyled">
+            <li><a href="#" class="text-white text-opacity-75 text-decoration-none" data-bs-toggle="modal" data-bs-target="#aboutModal">About Us</a></li>
+            <li><a href="#" class="text-white text-opacity-75 text-decoration-none" data-bs-toggle="modal" data-bs-target="#careersModal">Careers</a></li>
+            <li><a href="#" class="text-white text-opacity-75 text-decoration-none" data-bs-toggle="modal" data-bs-target="#blogModal">Blog</a></li>
+            <li><a href="#" class="text-white text-opacity-75 text-decoration-none" data-bs-toggle="modal" data-bs-target="#pressModal">Press</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4 mb-4">
+          <h5>Support</h5>
+          <ul class="list-unstyled">
+            <li><a href="#" class="text-white text-opacity-75 text-decoration-none" data-bs-toggle="modal" data-bs-target="#helpModal">Help Center</a></li>
+            <li><a href="mailto:madbuddies59@gmail.com" class="text-white text-opacity-75 text-decoration-none">Contact Us</a></li>
+            <li><a href="#" class="text-white text-opacity-75 text-decoration-none" data-bs-toggle="modal" data-bs-target="#faqModal">FAQs</a></li>
+            <li><a href="#" class="text-white text-opacity-75 text-decoration-none" data-bs-toggle="modal" data-bs-target="#apiModal">API Documentation</a></li>
+          </ul>
+        </div>
+      </div>
+      <hr class="bg-light opacity-25">
+      <div class="text-center text-white text-opacity-75">
+        <p class="mb-0">© 2023 BUDDIES P2P Exchange. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Asset data with price ranges and amounts
+    const assetData = {
+      PI: { 
+        minAmount: 10, 
+        maxAmount: 1000,
+        minPrice: 0.65,
+        maxPrice: 1.5,
+        priceUnit: "USD"
+      },
+      HC: { 
+        minAmount: 100, 
+        maxAmount: 5000,
+        minPrice: 0.02,
+        maxPrice: 0.04,
+        priceUnit: "USDT"
+      },
+      USDT: { 
+        minAmount: 5, 
+        maxAmount: 50000,
+        minPrice: 0.98,
+        maxPrice: 1.007,
+        priceUnit: "USD"
+      },
+      ATOK: { 
+        minAmount: 150, 
+        maxAmount: 10000,
+        minPrice: 0.009,
+        maxPrice: 0.02,
+        priceUnit: "USDT"
+      },
+      MEC: { 
+        minAmount: 0.3, 
+        maxAmount: 100,
+        minPrice: 3,
+        maxPrice: 5,
+        priceUnit: "USD"
+      }
+    };
+
+    // Ghost trader names
+    const ghostNames = [
+      "CryptoKing", "DigitalTrader", "BlockMaster", "CoinGuru", "BitVendor",
+      "P2PExpert", "TokenSeller", "ChainDealer", "WalletWarrior", "SatoshiFan",
+      "MoonLambo", "HODLerPro", "Fiat2Crypto", "BullRun2023", "BearMarketPro",
+      "AltcoinMaster", "StableCoinKing", "DefiDegen", "NFTartist", "Web3Builder",
+      "MetaverseMike", "DAO_Dave", "SmartContractSam", "OracleOliver", "NodeRunner",
+      "ValidatorVince", "LiquidityLarry", "APY_Andy", "GasFeeGary", "MempoolMark"
+    ];
+
+    // Current selected assets
+    let currentBuyAsset = 'PI';
+    let currentSellAsset = 'USDT';
+
+    // Function to close toast
+    function closeToast() {
+      const vestingToast = document.getElementById('vestingToast');
+      vestingToast.classList.remove('show');
+    }
+    
+    // Copy to clipboard function
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(function() {
+        showToast('Copied!', 'Address copied to clipboard');
+      }, function(err) {
+        showToast('Error', 'Failed to copy: ' + err, 'danger');
+      });
+    }
+    
+    // Show toast notification
+    function showToast(title, message, type = 'success') {
+      const toast = document.getElementById('toastNotification');
+      const toastTitle = document.getElementById('toastTitle');
+      const toastMessage = document.getElementById('toastMessage');
+      
+      toastTitle.textContent = title;
+      toastMessage.textContent = message;
+      
+      // Update toast color based on type
+      toast.className = `toast-notification alert alert-${type}`;
+      
+      // Show toast
+      toast.classList.add('show');
+      
+      // Hide after 3 seconds
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+    
+    // Generate traders for specific asset and section
+    function generateTraders(asset, section) {
+      const isBuySection = section === 'buy';
+      const containerId = isBuySection ? 'buySellersContainer' : 'sellBuyersContainer';
+      const container = document.getElementById(containerId);
+      
+      if (!container) return;
+      
+      container.innerHTML = '';
+      
+      const assetInfo = assetData[asset];
+      const traderType = isBuySection ? 'Sellers' : 'Buyers';
+      
+      // Generate 25 traders
+      for (let i = 0; i < 25; i++) {
+        const name = ghostNames[Math.floor(Math.random() * ghostNames.length)];
+        const rating = (Math.random() * 40 + 60).toFixed(1); // 60-100
+        const transactions = Math.floor(Math.random() * 500 + 70); // 70-570
+        const time = Math.floor(Math.random() * 6 + 10); // 10-15 mins
+        
+        // Generate random amount within asset range
+        const amount = (Math.random() * (assetInfo.maxAmount - assetInfo.minAmount) + assetInfo.minAmount)
+                      .toFixed(asset === 'MEC' || asset === 'PI' ? 2 : 0);
+        
+        // Generate random price within specified range
+        const price = (Math.random() * (assetInfo.maxPrice - assetInfo.minPrice) + assetInfo.minPrice)
+                     .toFixed(asset === 'USDT' ? 3 : 4);
+        
+        const availableAmount = (amount * 0.7).toFixed(2);
+        
+        const traderCard = document.createElement('div');
+        traderCard.className = isBuySection ? 'card seller-card p-3 mb-3' : 'card buyer-card p-3 mb-3';
+        traderCard.innerHTML = `
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <span class="seller-name">${name}</span>
+              <span class="seller-rating ms-2">${rating}%</span>
+            </div>
+            <button class="btn btn-sm ${isBuySection ? 'btn-primary' : 'btn-info'} action-btn">
+              ${isBuySection ? 'Buy' : 'Sell'}
+            </button>
+          </div>
+          <div class="row mt-2">
+            <div class="col-4">
+              <small class="text-muted">Amount</small>
+              <div class="seller-amount">${amount} ${asset}</div>
+            </div>
+            <div class="col-4">
+              <small class="text-muted">Price</small>
+              <div class="${isBuySection ? 'seller-price' : 'buyer-price'}">${price} ${assetInfo.priceUnit}</div>
+            </div>
+            <div class="col-4">
+              <small class="text-muted">Available</small>
+              <div>${availableAmount} ${asset}</div>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-6">
+              <small class="seller-transactions">${transactions} transactions</small>
+            </div>
+            <div class="col-6 text-end">
+              <small class="seller-time"><i class="bi bi-clock me-1"></i>${time} mins</small>
+            </div>
+          </div>
+        `;
+        
+        container.appendChild(traderCard);
+      }
+    }
+    
+    // Setup asset buttons for buy/sell sections
+    function setupAssetButtons() {
+      // Buy asset buttons
+      const buyAssetButtons = document.querySelectorAll('#buyAssetButtonsContainer .asset-btn');
+      buyAssetButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const asset = this.getAttribute('data-asset');
+          
+          // Remove active class from all buttons
+          buyAssetButtons.forEach(btn => btn.classList.remove('active'));
+          // Add active class to clicked button
+          this.classList.add('active');
+          
+          // Update current buy asset
+          currentBuyAsset = asset;
+          
+          // Update amount label
+          const buyAmountLabel = document.getElementById('buyAmountLabel');
+          if (buyAmountLabel) {
+            buyAmountLabel.textContent = `Enter amount of ${asset} you want to buy`;
+          }
+          
+          // Update amount input placeholder
+          const buyAmountInput = document.getElementById('buyAmountInput');
+          if (buyAmountInput) {
+            const minAmount = assetData[asset].minAmount;
+            buyAmountInput.placeholder = `Min ${minAmount}+ ${asset}`;
+            buyAmountInput.min = minAmount;
+          }
+          
+          // Regenerate traders for this asset
+          generateTraders(asset, 'buy');
+        });
+      });
+      
+      // Sell asset buttons
+      const sellAssetButtons = document.querySelectorAll('#sellAssetButtonsContainer .sell-asset-btn');
+      sellAssetButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const asset = this.getAttribute('data-asset');
+          
+          // Remove active class from all buttons
+          sellAssetButtons.forEach(btn => btn.classList.remove('active'));
+          // Add active class to clicked button
+          this.classList.add('active');
+          
+          // Update current sell asset
+          currentSellAsset = asset;
+          
+          // Update amount label
+          const sellAmountLabel = document.getElementById('sellAmountLabel');
+          if (sellAmountLabel) {
+            sellAmountLabel.textContent = `Enter amount of ${asset} you want to sell`;
+          }
+          
+          // Update amount input placeholder
+          const sellAmountInput = document.getElementById('sellAmountInput');
+          if (sellAmountInput) {
+            const minAmount = assetData[asset].minAmount;
+            sellAmountInput.placeholder = `Min ${minAmount}+ ${asset}`;
+            sellAmountInput.min = minAmount;
+          }
+          
+          // Regenerate traders for this asset
+          generateTraders(asset, 'sell');
+        });
+      });
+    }
+    
+    // Setup deposit asset buttons in modal
+    function setupDepositAssetButtons() {
+      const depositAssetButtons = document.querySelectorAll('.deposit-asset-btn');
+      depositAssetButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const asset = this.getAttribute('data-asset');
+          
+          // Remove active class from all buttons
+          depositAssetButtons.forEach(btn => btn.classList.remove('active'));
+          // Add active class to clicked button
+          this.classList.add('active');
+          
+          // Hide all deposit sections
+          document.querySelectorAll('.asset-deposit-content').forEach(el => {
+            el.classList.remove('active');
+          });
+          
+          // Show selected deposit section
+          const depositSection = document.getElementById(`deposit${asset}`);
+          if (depositSection) {
+            depositSection.classList.add('active');
+          }
+        });
+      });
+    }
+    
+    // Setup mobile money withdrawal methods
+    function setupMobileMoneyMethods() {
+      const methodCards = document.querySelectorAll('.method-card');
+      const selectedMethodInput = document.getElementById('selectedMethod');
+      
+      methodCards.forEach(card => {
+        card.addEventListener('click', function() {
+          // Remove selected class from all cards
+          methodCards.forEach(c => c.classList.remove('selected'));
+          
+          // Add selected class to clicked card
+          this.classList.add('selected');
+          
+          // Update selected method input
+          const method = this.getAttribute('data-method');
+          selectedMethodInput.value = method;
+        });
+      });
+      
+      // Withdraw button handlers
+      document.getElementById('withdrawCryptoBtn').addEventListener('click', function() {
+        document.getElementById('insufficientFundsModal').style.display = 'block';
+        document.getElementById('insufficientOverlay').style.display = 'block';
+      });
+      
+      document.getElementById('withdrawMobileBtn').addEventListener('click', function() {
+        const method = selectedMethodInput.value;
+        if (!method) {
+          showToast('Error', 'Please select a payment method', 'danger');
+          return;
+        }
+        
+        const accountName = document.getElementById('accountName').value;
+        const accountNumber = document.getElementById('accountNumber').value;
+        const amount = document.getElementById('mobileAmount').value;
+        
+        if (!accountName || !accountNumber || !amount) {
+          showToast('Error', 'Please fill all required fields', 'danger');
+          return;
+        }
+        
+        showToast('Success', `Withdrawal request submitted via ${method}`);
+      });
+    }
+    
+    // Verify deposit function
+    function verifyDeposit(asset) {
+      // Show invalid transaction message
+      const invalidElement = document.getElementById(`${asset.toLowerCase()}InvalidTransaction`);
+      if (invalidElement) {
+        invalidElement.style.display = 'block';
+        
+        // Hide after 5 seconds
+        setTimeout(() => {
+          invalidElement.style.display = 'none';
+        }, 5000);
+      }
+    }
+    
+    // Wait for the DOM to be fully loaded before executing JavaScript
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize variables
+      const vestingBtn = document.getElementById('registerVesting');
+      const downloadAppBtn = document.getElementById('downloadAppBtn');
+      const jumpstartBtn = document.getElementById('jumpstartBtn');
+      const vestingToast = document.getElementById('vestingToast');
+      const requireDepositModal = new bootstrap.Modal(document.getElementById('requireDepositModal'));
+      const userDetailsForm = document.getElementById('userDetailsForm');
+      const exchangePlatform = document.getElementById('exchangePlatform');
+      const userDetailsPage = document.getElementById('userDetailsPage');
+      
+      // Check if user details are already saved
+      const savedName = localStorage.getItem('userName');
+      const savedCountry = localStorage.getItem('userCountry');
+      
+      if (savedName && savedCountry) {
+        // Hide user details page and show exchange platform
+        userDetailsPage.style.display = 'none';
+        exchangePlatform.style.display = 'block';
+        
+        // Set profile details
+        document.getElementById('profileName').textContent = savedName;
+        document.getElementById('profileCountry').textContent = savedCountry;
+        
+        // Generate initial traders
+        generateTraders(currentBuyAsset, 'buy');
+        generateTraders(currentSellAsset, 'sell');
+        
+        // Setup asset buttons
+        setupAssetButtons();
+        
+        // Setup deposit asset buttons
+        setupDepositAssetButtons();
+        
+        // Setup mobile money methods
+        setupMobileMoneyMethods();
+      }
+      
+      // Deposit verify buttons
+      document.querySelectorAll('.deposit-verify-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const asset = this.getAttribute('data-asset');
+          const verifyForm = document.getElementById(`${asset.toLowerCase()}VerifyForm`);
+          if (verifyForm) {
+            verifyForm.style.display = 'block';
+          }
+        });
+      });
+      
+      // Close insufficient funds modal
+      document.getElementById('insufficientCloseBtn').addEventListener('click', function() {
+        document.getElementById('insufficientFundsModal').style.display = 'none';
+        document.getElementById('insufficientOverlay').style.display = 'none';
+      });
+      
+      // User Details Form Submission
+      userDetailsForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const fullName = document.getElementById('fullName').value;
+        const country = document.getElementById('country').value;
+        const phoneNumber = document.getElementById('phoneNumber').value;
+        
+        // Validate phone number format
+        if (!phoneNumber.startsWith('+')) {
+          alert('Phone number must start with + followed by country code and number');
+          return;
+        }
+        
+        // Save to localStorage
+        localStorage.setItem('userName', fullName);
+        localStorage.setItem('userCountry', country);
+        localStorage.setItem('userPhone', phoneNumber);
+        
+        // Hide user details page and show exchange platform
+        userDetailsPage.style.display = 'none';
+        exchangePlatform.style.display = 'block';
+        
+        // Set profile details
+        document.getElementById('profileName').textContent = fullName;
+        document.getElementById('profileCountry').textContent = country;
+        
+        // Generate initial traders
+        generateTraders(currentBuyAsset, 'buy');
+        generateTraders(currentSellAsset, 'sell');
+        
+        // Setup asset buttons
+        setupAssetButtons();
+        
+        // Setup deposit asset buttons
+        setupDepositAssetButtons();
+        
+        // Setup mobile money methods
+        setupMobileMoneyMethods();
+      });
+      
+      // Vesting Registration Button Click Event
+      vestingBtn.addEventListener('click', function() {
+        vestingToast.classList.add('show');
+        
+        // Hide toast after 5 seconds
+        setTimeout(function() {
+          closeToast();
+        }, 5000);
+      });
+      
+      // Download App Button Click Event
+      downloadAppBtn.addEventListener('click', function() {
+        vestingToast.classList.add('show');
+        
+        // Hide toast after 5 seconds
+        setTimeout(function() {
+          closeToast();
+        }, 5000);
+      });
+      
+      // Jumpstart Button Click Event
+      jumpstartBtn.addEventListener('click', function() {
+        vestingToast.classList.add('show');
+        
+        // Hide toast after 5 seconds
+        setTimeout(function() {
+          closeToast();
+        }, 5000);
+      });
+      
+      // Handle trade actions (buy/sell/create ad)
+      document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('action-btn') || 
+            e.target.id === 'createBuyAd' || 
+            e.target.id === 'createSellAd') {
+          e.preventDefault();
+          requireDepositModal.show();
+        }
+      });
+    });
+  </script>
+
+</body></html>
